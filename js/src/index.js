@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ChildComponent from './components/Top/Base';
 
+import { Provider } from 'react-redux'
+import store from '../redux/store'
+
 class ParentComponent extends React.Component {
   render() {
     return (
@@ -13,6 +16,8 @@ class ParentComponent extends React.Component {
 }
 
 ReactDOM.render(
-  <ParentComponent/>,
+  <Provider store={store}>
+    <ParentComponent/>
+  </Provider>,
   document.getElementById('root')
 );
