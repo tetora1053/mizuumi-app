@@ -1,18 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ChildComponent from './components/Top/Base';
-
 import { Provider } from 'react-redux'
 import store from '../redux/store'
+import Top from '../redux/containers/Top'
 
-class ParentComponent extends React.Component {
-  render() {
-    return (
-      <div>
-        <ChildComponent/>
-      </div>
-    )
-  }
+const ParentComponent = () => {
+  return (
+    <div>
+      <Top/>
+    </div>
+  )
 }
 
 ReactDOM.render(
@@ -21,3 +18,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+

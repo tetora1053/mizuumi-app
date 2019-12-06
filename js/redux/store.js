@@ -1,5 +1,6 @@
-import { createStore } from "redux";
-import rootReducer from "./reducers";
+import { createStore } from 'redux'
+import incrementId from './reducers/reducer'
 
-export default createStore(rootReducer);
+const store = createStore(incrementId)
+export default store
 
