@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { incrementUserId, incrementGroupId } from '../actions'
-import Top from '../../src/components/Top/Base'
+import Top from '../../src/components/Top/Top'
 
 const mapStateToProps = state => {
   return ({
