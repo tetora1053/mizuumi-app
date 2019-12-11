@@ -5,19 +5,21 @@ const Top = (props) => {
 
   const incrementUserId = () => {
     props.incrementUserId()
-    console.log(props)
   }
 
   const incrementGroupId = () => {
     props.incrementGroupId()
-    console.log(props)
   }
 
   return (
     <div>
       <p id="title">MyFavoriteMovies</p>
-      <button onClick={incrementUserId}>increment UserID</button>
-      <button onClick={incrementGroupId}>increment GroupID</button>
+      <div>
+        <button onClick={incrementUserId}>increment UserID</button>{props.userId}
+      </div>
+      <div>
+        <button onClick={incrementGroupId}>increment GroupID</button>{props.groupId}
+      </div>
     </div>
   );
 }
