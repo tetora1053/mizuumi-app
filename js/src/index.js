@@ -7,7 +7,7 @@ import Login from '../redux/containers/Login'
 
 const ParentComponent = () => {
   let parentCmp
-  if (false) {
+  if (true) {
     parentCmp = <Top/>
   } else {
     parentCmp = <Login/>
