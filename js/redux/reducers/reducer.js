@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
 import incrementUserId from './incrementUserId'
 import incrementGroupId from './incrementGroupId'
+import getUser from './getUser'
 
-const incrementId = combineReducers({
+const rootReducer = combineReducers({
     incrementUserId,
-    incrementGroupId
+    incrementGroupId,
+    getUser
 })
 
-export default incrementId
+export default rootReducer
 
