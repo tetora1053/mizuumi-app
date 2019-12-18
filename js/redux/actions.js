@@ -12,8 +12,8 @@ export const incrementGroupId = () => ({
 export const getMovies = () => {
   console.log("getMovies")
   return dispatch => {
-    const data = { name: 'Joker', released: '2019' }
-    axios.post("http://160.16.196.72:1323/users", data).then(res => {
+    const data = { name: 'Joker', released: 2019 }
+    axios.post("http://160.16.196.72:1323/movies", data).then(res => {
       console.log(res.data)
       dispatch({
         type: GET_MOVIES,
