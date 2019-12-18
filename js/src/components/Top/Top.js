@@ -13,7 +13,7 @@ const Top = (props) => {
         <button onClick={props.incrementGroupId}>increment GroupID</button>{props.groupId}
       </div>
       <div>
-        <button onClick={props.getUser}>get user</button>{props.name}
+        <button onClick={props.getMovies}>get movies</button>{props.name}
       </div>
     </div>
   );
