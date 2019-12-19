@@ -2,7 +2,7 @@ import { GET_MOVIES } from '../actionTypes'
 
 const initialState = {
   name: "Shining",
-  released: "1980"
+  released: 1980
 }
 
 const getMovies = (state = initialState, action) => {
