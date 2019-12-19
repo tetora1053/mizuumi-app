@@ -7,15 +7,25 @@ const Top = (props) => {
     props.handleChangeSearchId(e.target.value)
   }
 
+  const movies = props.movies.map((movie) => (
+    <div>
+      <p>{movie.title}</p>
+      <p>{movie.released}</p>
+    </div>
+  ));
+
   return (
     <div>
       <p id="title">MyFavoriteMovies</p>
+
       <div>
         <button onClick={props.incrementUserId}>increment UserID</button>{props.userId}
       </div>
+
       <div>
         <button onClick={props.incrementGroupId}>increment GroupID</button>{props.groupId}
       </div>
+
       <input type="number" defaultValue="props.searchId" onChange={changeSearchId}/>
       sid:{props.searchId}
       <div>
@@ -25,6 +35,11 @@ const Top = (props) => {
         <p>{props.title}</p>
         <p>{props.released}</p>
       </div>
+
+      <div>
+        <button onClick={props.getMovies}>get movies</button>
+      </div>
+      {movies}
     </div>
   );
 }

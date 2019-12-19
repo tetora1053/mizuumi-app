@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "github.com/labstack/echo"
+	_ "fmt"
+	"net/http"
+	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -25,18 +25,18 @@ func gormConnect() *gorm.DB {
 
 type Movie struct {
 	Id int `json:"id"`
-    Title  string `json:"title"`
-    Released int `json:"released"`
+	Title  string `json:"title"`
+	Released int `json:"released"`
 }
 
 func main() {
-    e := echo.New()
+	e := echo.New()
 	e.Use(middleware.CORS())
 
 	e.GET("/movies/:id", getMovieById)
-    e.POST("/movies", getMovies)
+	e.GET("/movies", getMovies)
 
-    e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1323"))
 }
 
 func getMovieById(c echo.Context) error {
@@ -44,21 +44,21 @@ func getMovieById(c echo.Context) error {
 	id, _ = strconv.Atoi(c.Param("id"))
 
 	db := gormConnect()
-	// 最後にDB接続を切断
 	defer db.Close()
 
 	m := Movie{}
 	db.First(&m, id)
-	fmt.Println(m)
 
 	return c.JSON(http.StatusOK, m)
 }
 
 func getMovies(c echo.Context) error {
-    u := new(Movie)
-    if err := c.Bind(u); err != nil {
-        return err
-    }
-    return c.JSON(http.StatusOK, u)
+	db := gormConnect()
+	defer db.Close()
+
+	ms := []Movie{}
+	db.Find(&ms)
+
+	return c.JSON(http.StatusOK, ms)
 }
 

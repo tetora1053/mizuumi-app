@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { incrementUserId, incrementGroupId, getMovieById, handleChangeSearchId } from '../actions'
+import { incrementUserId, incrementGroupId, getMovieById, getMovies, handleChangeSearchId } from '../actions'
 import Top from '../../src/components/Top/Top'
 
 const mapStateToProps = state => {
@@ -8,7 +8,8 @@ const mapStateToProps = state => {
     groupId: state.incrementGroupId.groupId,
     title: state.getMovieById.title,
     released: state.getMovieById.released,
-    searchId: state.handleChangeSearchId
+    searchId: state.handleChangeSearchId,
+    movies: state.getMovies
   })
 }
 
@@ -16,6 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   incrementUserId: () => dispatch(incrementUserId()),
   incrementGroupId: () => dispatch(incrementGroupId()),
   getMovieById: () => dispatch(getMovieById()),
+  getMovies: () => dispatch(getMovies()),
   handleChangeSearchId: (id) => dispatch(handleChangeSearchId(id))
 })
 
