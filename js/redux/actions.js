@@ -1,4 +1,5 @@
-import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID } from './actionTypes'
+import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_FROM_TMDB } from './actionTypes'
+import { TMDB_API_KEY } from '../secret/secret';
 import axios from 'axios';
 
 export const incrementUserId = () => ({
@@ -38,6 +39,19 @@ export const handleChangeSearchId = (id) => {
   return {
     type: HANDLE_CHANGE_SEARCH_ID,
     searchId: id
+  }
+}
+
+export const getMovieFromTmdb = () => {
+  return (dispatch) => {
+    const url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API_KEY + "&language=ja"
+    axios.get(url).then(res => {
+      console.log(res.data)
+      dispatch({
+        type: GET_MOVIE_FROM_TMDB,
+        payload: res.data
+      })
+    })
   }
 }
 

@@ -40,6 +40,16 @@ const Top = (props) => {
         <button onClick={props.getMovies}>get movies</button>
       </div>
       {movies}
+
+      <div>
+        <p>API実験場</p>
+        <div>
+          <button onClick={props.getMovieFromTmdb}>ファイトクラブ</button>
+          {props.titleTmdb}
+          {props.releaseDateTmdb}
+        </div>
+      </div>
+
     </div>
   );
 }
