@@ -1,1 +1,4 @@
 js/node_modules/*
+go/secret/secret.go
+go/batch/secret/secret.go
+js/secret/secret.js

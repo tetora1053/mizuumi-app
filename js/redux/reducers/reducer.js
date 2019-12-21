@@ -1,12 +1,18 @@
 import { combineReducers } from 'redux'
 import incrementUserId from './incrementUserId'
 import incrementGroupId from './incrementGroupId'
-import getMovies from './getMovies'
+import { getMovieById } from './getMovieById'
+import { getMovies } from './getMovies'
+import { handleChangeSearchId } from './handleChangeSearchId'
+import { getMovieFromTmdb } from './getMovieFromTmdb'
 
 const rootReducer = combineReducers({
     incrementUserId,
     incrementGroupId,
-    getMovies
+    getMovieById,
+    getMovies,
+    handleChangeSearchId,
+    getMovieFromTmdb
 })
 
 export default rootReducer

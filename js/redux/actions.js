@@ -1,4 +1,5 @@
-import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIES } from './actionTypes'
+import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_FROM_TMDB } from './actionTypes'
+import { TMDB_API_KEY } from '../secret/secret';
 import axios from 'axios';
 
 export const incrementUserId = () => ({
@@ -9,14 +10,45 @@ export const incrementGroupId = () => ({
   type: INCREMENT_GROUP_ID
 })
 
+export const getMovieById = () => {
+  return (dispatch, getState) => {
+    const id = getState().handleChangeSearchId
+    const url = "http://160.16.196.72:1323/movies/" + id
+    axios.get(url).then(res => {
+      dispatch({
+        type: GET_MOVIE_BY_ID,
+        payload: res.data
+      })
+    })
+  }
+}
+
 export const getMovies = () => {
-  console.log("getMovies")
-  return dispatch => {
-    const data = { name: 'Joker', released: '2019' }
-    axios.post("http://160.16.196.72:1323/users", data).then(res => {
-      console.log(res.data)
+  return (dispatch) => {
+    const url = "http://160.16.196.72:1323/movies"
+    axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIES,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const handleChangeSearchId = (id) => {
+  return {
+    type: HANDLE_CHANGE_SEARCH_ID,
+    searchId: id
+  }
+}
+
+export const getMovieFromTmdb = () => {
+  return (dispatch) => {
+    const url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API_KEY + "&language=ja"
+    axios.get(url).then(res => {
+      console.log(res.data)
+      dispatch({
+        type: GET_MOVIE_FROM_TMDB,
         payload: res.data
       })
     })

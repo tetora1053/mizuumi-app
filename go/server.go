@@ -1,29 +1,64 @@
 package main
 
 import (
-    "net/http"
-    "github.com/labstack/echo"
+	_ "fmt"
+	"net/http"
+	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"./secret"
+	"strconv"
 )
 
-type User struct {
-    Name  string `json:"name"`
-    Email string `json:"email"`
+func gormConnect() *gorm.DB {
+	a := secret.GetAuthData()
+
+	CONNECT := a.USER + ":" + a.PASS + "@" + a.PROTOCOL + "/" + a.DBNAME
+	// DBに接続
+	db, err := gorm.Open(a.DBMS, CONNECT)
+	if err != nil {
+		panic(err.Error())
+	}
+	return db
+}
+
+type Movie struct {
+	Id int `json:"id"`
+	Title  string `json:"title"`
+	Released int `json:"released"`
 }
 
 func main() {
-    e := echo.New()
+	e := echo.New()
 	e.Use(middleware.CORS())
 
-    e.POST("/users", saveUser)
+	e.GET("/movies/:id", getMovieById)
+	e.GET("/movies", getMovies)
 
-    e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func saveUser(c echo.Context) error {
-    u := new(User)
-    if err := c.Bind(u); err != nil {
-        return err
-    }
-    return c.JSON(http.StatusOK, u)
+func getMovieById(c echo.Context) error {
+	var id int
+	id, _ = strconv.Atoi(c.Param("id"))
+
+	db := gormConnect()
+	defer db.Close()
+
+	m := Movie{}
+	db.First(&m, id)
+
+	return c.JSON(http.StatusOK, m)
 }
+
+func getMovies(c echo.Context) error {
+	db := gormConnect()
+	defer db.Close()
+
+	ms := []Movie{}
+	db.Find(&ms)
+
+	return c.JSON(http.StatusOK, ms)
+}
+
