@@ -15,6 +15,7 @@ import (
 )
 
 type Movie struct {
+	Tmdb_id int64 `json:"id"`
 	Title string
 	Release_date string
 }
@@ -48,6 +49,7 @@ func main() {
 		log.Fatal(err)
 	}
 	b, err := ioutil.ReadAll(res.Body)
+	fmt.Println(string(b))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,6 +62,6 @@ func main() {
 	// dbに接続して新規レコード作成
 	db := gormConnect()
 	defer db.Close()
-	db.Create(&m)
+	db.FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
 }
 
