@@ -1,4 +1,3 @@
 js/node_modules/*
-go/secret/secret.go
-go/batch/secret/secret.go
+go/secret/*
 js/secret/secret.js
