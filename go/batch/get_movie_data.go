@@ -44,7 +44,6 @@ func gormConnect() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(c.DB.User)
 
 	connect := c.DB.User + ":" + c.DB.Password+ "@" + c.DB.Protocol + "/" + c.DB.Dbname
 	// DBに接続
@@ -70,7 +69,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(c.API.Api_key)
 	v.Set("api_key", c.API.Api_key)
 	v.Add("language", "ja")
 	res, err := http.Get(u + "?" + v.Encode())
@@ -78,8 +76,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if res.StatusCode != 200 {
+		log.Fatal("StatusCode is not 200 but ", res.StatusCode)
+	}
 	b, err := ioutil.ReadAll(res.Body)
-	fmt.Println(string(b))
 	if err != nil {
 		log.Fatal(err)
 	}
