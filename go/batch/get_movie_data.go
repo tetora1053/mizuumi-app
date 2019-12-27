@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/BurntSushi/toml"
 	"fmt"
 	"flag"
 	"strconv"
@@ -11,20 +12,42 @@ import (
 	"encoding/json"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"./secret"
 )
 
+type Config struct {
+	DB DBConfig
+	API APIConfig
+}
+
+type DBConfig struct {
+	Dbms string `toml: "dbms"`
+	User string `toml: "user"`
+	Password string `toml: "password"`
+	Protocol string `toml: "protocol"`
+	Dbname string `toml: "dbname"`
+}
+
+type APIConfig struct {
+	Api_key string `toml: "api_key"`
+}
+
 type Movie struct {
+	Tmdb_id int64 `json:"id"`
 	Title string
 	Release_date string
 }
 
 func gormConnect() *gorm.DB {
-	a := secret.GetAuthData()
 
-	CONNECT := a.USER + ":" + a.PASS + "@" + a.PROTOCOL + "/" + a.DBNAME
+	var c Config
+	_, err := toml.DecodeFile("../secret/config.toml", &c)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connect := c.DB.User + ":" + c.DB.Password+ "@" + c.DB.Protocol + "/" + c.DB.Dbname
 	// DBに接続
-	db, err := gorm.Open(a.DBMS, CONNECT)
+	db, err := gorm.Open(c.DB.Dbms, connect)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -40,12 +63,21 @@ func main() {
 	}
 	u := "https://api.themoviedb.org/3/movie/" + id
 	v := url.Values{}
-	v.Set("api_key", secret.TMDB_API_KEY)
+
+	var c Config
+	_, err := toml.DecodeFile("../secret/config.toml", &c)
+	if err != nil {
+		log.Fatal(err)
+	}
+	v.Set("api_key", c.API.Api_key)
 	v.Add("language", "ja")
 	res, err := http.Get(u + "?" + v.Encode())
 	defer res.Body.Close()
 	if err != nil {
 		log.Fatal(err)
+	}
+	if res.StatusCode != 200 {
+		log.Fatal("StatusCode is not 200 but ", res.StatusCode)
 	}
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -60,6 +92,6 @@ func main() {
 	// dbに接続して新規レコード作成
 	db := gormConnect()
 	defer db.Close()
-	db.Create(&m)
+	db.FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
 }
 
