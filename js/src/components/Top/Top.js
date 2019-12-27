@@ -10,7 +10,7 @@ const Top = (props) => {
   const movies = props.movies.map((movie) => (
     <div>
       <p>{movie.title}</p>
-      <p>{movie.released}</p>
+      <p>{movie.release_date}</p>
     </div>
   ));
 
@@ -33,7 +33,7 @@ const Top = (props) => {
       </div>
       <div>
         <p>{props.title}</p>
-        <p>{props.released}</p>
+        <p>{props.release_date}</p>
       </div>
 
       <div>

@@ -7,7 +7,7 @@ const mapStateToProps = state => {
     userId: state.incrementUserId.userId,
     groupId: state.incrementGroupId.groupId,
     title: state.getMovieById.title,
-    released: state.getMovieById.released,
+    release_date: state.getMovieById.release_date,
     searchId: state.handleChangeSearchId,
     movies: state.getMovies,
     titleTmdb: state.getMovieFromTmdb.title,
