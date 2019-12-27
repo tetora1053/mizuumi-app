@@ -1,6 +1,17 @@
+import React from 'react';
 import { connect } from 'react-redux'
-import { incrementUserId, incrementGroupId, getMovieById, getMovies, handleChangeSearchId, getMovieFromTmdb } from '../actions'
-import Top from '../../src/components/Top/Top'
+import { incrementUserId, incrementGroupId, getMovieById, getMovies, handleChangeSearchId, getMovieFromTmdb, getMoviesByUserId } from '../actions'
+import TopComp from '../../src/components/Top/Top'
+
+class Top extends React.Component {
+  render() {
+    return (
+      <div>
+        <TopComp />
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return ({
@@ -10,6 +21,7 @@ const mapStateToProps = state => {
     release_date: state.getMovieById.release_date,
     searchId: state.handleChangeSearchId,
     movies: state.getMovies,
+    user_movies: state.getMoviesByUserId,
     titleTmdb: state.getMovieFromTmdb.title,
     releaseDateTmdb: state.getMovieFromTmdb.release_date
   })
@@ -20,6 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
   incrementGroupId: () => dispatch(incrementGroupId()),
   getMovieById: () => dispatch(getMovieById()),
   getMovies: () => dispatch(getMovies()),
+  getMoviesByUserId: (user_id) => dispatch(getMoviesByUserId(user_id)),
   handleChangeSearchId: (id) => dispatch(handleChangeSearchId(id)),
   getMovieFromTmdb: () => dispatch(getMovieFromTmdb())
 })
@@ -27,5 +40,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Top)
+)(TopComp)
 

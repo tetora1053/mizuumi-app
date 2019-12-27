@@ -1,4 +1,4 @@
-import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_FROM_TMDB } from './actionTypes'
+import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_FROM_TMDB, GET_MOVIES_BY_USER_ID } from './actionTypes'
 import { TMDB_API_KEY } from '../secret/secret';
 import axios from 'axios';
 
@@ -29,6 +29,18 @@ export const getMovies = () => {
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIES,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const getMoviesByUserId = (user_id) => {
+  return (dispatch) => {
+    const url = "http://160.16.196.72:1323/users/" + user_id + "/movies"
+    axios.get(url).then(res => {
+      dispatch({
+        type: GET_MOVIES_BY_USER_ID,
         payload: res.data
       })
     })
