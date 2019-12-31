@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { incrementUserId, incrementGroupId, getMovieById, getMovies, handleChangeSearchId, getMovieFromTmdb, getMoviesByUserId } from '../actions'
-import TopComp from '../../src/components/Top/Top'
+import TopComp from '../components/Top/Top'
 
 class Top extends React.Component {
   render() {

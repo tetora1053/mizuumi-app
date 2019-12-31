@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import store from '../redux/store'
-import Top from '../redux/containers/Top'
-import Login from '../redux/containers/Login'
+import store from './store'
+import Top from './containers/Top'
+import Login from './containers/Login'
 
 const ParentComponent = () => {
   let parentCmp
