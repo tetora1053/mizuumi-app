@@ -1,10 +1,10 @@
-import React from 'react';
-import './top.css';
+import React from 'react'
+import './top.css'
 
 class Top extends React.Component {
   constructor() {
-    super();
-    this.changeSearchId = this.changeSearchId.bind(this);
+    super()
+    this.changeSearchId = this.changeSearchId.bind(this)
   }
 
   componentDidMount() {
@@ -12,8 +12,8 @@ class Top extends React.Component {
      * todo
      * user_idをセッションから取得する
      */
-    const user_id = 1
-    this.props.getMoviesByUserId(user_id)
+    const userId = 1
+    this.props.getMoviesByUserId(userId)
   }
 
   changeSearchId(e) {
@@ -28,10 +28,10 @@ class Top extends React.Component {
       </div>
     ));
 
-    const userMovies = this.props.userMovies.map((user_movie) => (
-      <div key={user_movie.id}>
-        <p>{user_movie.title}</p>
-        <p>{user_movie.release_date}</p>
+    const userMovies = this.props.userMovies.map((userMovie) => (
+      <div key={userMovie.id}>
+        <p>{userMovie.title}</p>
+        <p>{userMovie.release_date}</p>
       </div>
     ));
 
@@ -39,14 +39,6 @@ class Top extends React.Component {
     return (
       <div>
         <p id="title">MyFavoriteMovies</p>
-
-        <div>
-          <button onClick={this.props.incrementUserId}>increment UserID</button>{this.props.userId}
-        </div>
-
-        <div>
-          <button onClick={this.props.incrementGroupId}>increment GroupID</button>{this.props.groupId}
-        </div>
 
         <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
         <div>
@@ -77,8 +69,7 @@ class Top extends React.Component {
         </div>
 
       </div>
-    );
-
+    )
   }
 }
 
