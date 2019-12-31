@@ -2,6 +2,11 @@ import React from 'react';
 import './top.css';
 
 class Top extends React.Component {
+  constructor() {
+    super();
+    this.changeSearchId = this.changeSearchId.bind(this);
+  }
+
   componentDidMount() {
     /*
      * todo
@@ -23,7 +28,7 @@ class Top extends React.Component {
       </div>
     ));
 
-    const user_movies = this.props.user_movies.map((user_movie) => (
+    const userMovies = this.props.userMovies.map((user_movie) => (
       <div key={user_movie.id}>
         <p>{user_movie.title}</p>
         <p>{user_movie.release_date}</p>
@@ -44,13 +49,12 @@ class Top extends React.Component {
         </div>
 
         <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
-        sid:{this.props.searchId}
         <div>
           <button onClick={this.props.getMovieById}>get movie by id</button>
         </div>
         <div>
-          <p>{this.props.title}</p>
-          <p>{this.props.release_date}</p>
+          <p>{this.props.movie.title}</p>
+          <p>{this.props.movie.releaseDate}</p>
         </div>
 
         <div>
@@ -61,14 +65,14 @@ class Top extends React.Component {
         <div>
           <button onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
         </div>
-        {user_movies}
+        {userMovies}
 
         <div>
           <p>API実験場</p>
           <div>
             <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
-            {this.props.titleTmdb}
-            {this.props.releaseDateTmdb}
+            {this.props.movieTmdb.title}
+            {this.props.movieTmdb.releaseDate}
           </div>
         </div>
 

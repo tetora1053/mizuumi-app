@@ -1,6 +1,6 @@
 import { INCREMENT_USER_ID, INCREMENT_GROUP_ID, GET_MOVIE_BY_ID, GET_MOVIES, HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_FROM_TMDB, GET_MOVIES_BY_USER_ID } from './actionTypes'
-import { TMDB_API_KEY } from '../secret/secret';
-import axios from 'axios';
+import { TMDB_API_KEY } from '../secret/secret'
+import axios from 'axios'
 
 export const incrementUserId = () => ({
   type: INCREMENT_USER_ID

@@ -17,24 +17,22 @@ const mapStateToProps = state => {
   return ({
     userId: state.incrementUserId.userId,
     groupId: state.incrementGroupId.groupId,
-    title: state.getMovieById.title,
-    release_date: state.getMovieById.release_date,
     searchId: state.handleChangeSearchId,
-    movies: state.getMovies,
-    user_movies: state.getMoviesByUserId,
-    titleTmdb: state.getMovieFromTmdb.title,
-    releaseDateTmdb: state.getMovieFromTmdb.release_date
+    movie: state.movie.movie,
+    movieTmdb: state.movie.movieTmdb,
+    movies: state.movies.movies,
+    userMovies: state.movies.userMovies
   })
 }
 
 const mapDispatchToProps = (dispatch) => ({
   incrementUserId: () => dispatch(incrementUserId()),
   incrementGroupId: () => dispatch(incrementGroupId()),
-  getMovieById: () => dispatch(getMovieById()),
-  getMovies: () => dispatch(getMovies()),
-  getMoviesByUserId: (user_id) => dispatch(getMoviesByUserId(user_id)),
   handleChangeSearchId: (id) => dispatch(handleChangeSearchId(id)),
-  getMovieFromTmdb: () => dispatch(getMovieFromTmdb())
+  getMovieById: () => dispatch(getMovieById()),
+  getMovieFromTmdb: () => dispatch(getMovieFromTmdb()),
+  getMovies: () => dispatch(getMovies()),
+  getMoviesByUserId: (user_id) => dispatch(getMoviesByUserId(user_id))
 })
 
 export default connect(
