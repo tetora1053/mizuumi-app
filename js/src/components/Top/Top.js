@@ -22,7 +22,7 @@ class Top extends React.Component {
   render() {
 
     const movies = this.props.movies.map((movie) => (
-      <div>
+      <div key={movie.id}>
         <p>{movie.title}</p>
         <p>{movie.release_date}</p>
       </div>
