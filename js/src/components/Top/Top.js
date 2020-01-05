@@ -1,5 +1,8 @@
 import React from 'react'
 import './top.css'
+/* 01/05 add start*/
+import { Box, Button, Input, AppBar, Toolbar, Typography } from '@material-ui/core';
+/* 01/05 add end */
 
 class Top extends React.Component {
   constructor() {
@@ -35,14 +38,26 @@ class Top extends React.Component {
       </div>
     ));
 
-
     return (
       <div>
-        <p id="title">MyFavoriteMovies</p>
+        {/* 01/05 UIコンポーネント置き換え start */}
+        <Box className="base">
+        
+        <AppBar position="static" color="primary">
+          <Toolbar variant="regular">
+            <Typography variant="h3">
+              My Favorite Movies.
+            </Typography>
+            <Typography variant="h6">
+              mizuumi
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-        <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
+        <Input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
         <div>
-          <button onClick={this.props.getMovieById}>get movie by id</button>
+          {/* <button onClick={this.props.getMovieById}>get movie by id</button> */}
+          <Button variant="contained" color="primary" onClick={this.props.getMovieById}>get movie by id</Button>
         </div>
         <div>
           <p>{this.props.movie.title}</p>
@@ -50,7 +65,8 @@ class Top extends React.Component {
         </div>
 
         <div>
-          <button onClick={this.props.getMovies}>get movies</button>
+          {/* <button onClick={this.props.getMovies}>get movies</button> */}
+          <Button variant="contained" color="primary" onClick={this.props.getMovies}>get movies</Button>
         </div>
         {movies}
 
@@ -62,12 +78,14 @@ class Top extends React.Component {
         <div>
           <p>API実験場</p>
           <div>
-            <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
+            {/* <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button> */}
+            <Button variant="contained" color="secondary" onClick={this.props.getMovieFromTmdb}>ファイトクラブ</Button>
             {this.props.movieTmdb.title}
             {this.props.movieTmdb.releaseDate}
           </div>
         </div>
-
+        </Box>
+        {/* 01/05 UIコンポーネント置き換え end */}
       </div>
     )
   }

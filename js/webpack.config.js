@@ -30,5 +30,6 @@ module.exports = {
 	  }
     ]
   },
-  mode: 'none'
+  mode: 'none',
+  performance: { hints: false }
 };

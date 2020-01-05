@@ -1,3 +1,21 @@
-#title {
+/* #title {
     background-color: red;
+} */
+
+/* 01/05 add start */
+.MuiToolbar-regular {
+    justify-content: space-between;
 }
+
+.base {
+    background-color: #ace4e1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+/* 01/05 add end */
+
