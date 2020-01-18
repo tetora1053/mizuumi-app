@@ -22,52 +22,58 @@ class Top extends React.Component {
   render() {
 
     const movies = this.props.movies.map((movie) => (
-      <div key={movie.id}>
-        <p>{movie.title}</p>
-        <p>{movie.release_date}</p>
+      <div class="movie" key={movie.id}>
+        <p class="movieTitle">{movie.title}</p>
+        <p class="releaseDate">{movie.release_date}</p>
       </div>
     ));
 
     const userMovies = this.props.userMovies.map((userMovie) => (
-      <div key={userMovie.id}>
-        <p>{userMovie.title}</p>
-        <p>{userMovie.release_date}</p>
+      <div class="movie" key={userMovie.id}>
+        <p class="movieTitle">{userMovie.title}</p>
+        <p class="releaseDate">{userMovie.release_date}</p>
       </div>
     ));
 
 
     return (
-      <div>
-        <p id="title">MyFavoriteMovies</p>
+      <div class="app">
+        <header class="header">
+          <p id="title">Your Favorite Movies.</p>
+          <p id="log-out">Log out</p>
+        </header>
 
-        <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
-        <div>
-          <button onClick={this.props.getMovieById}>get movie by id</button>
-        </div>
-        <div>
-          <p>{this.props.movie.title}</p>
-          <p>{this.props.movie.releaseDate}</p>
-        </div>
-
-        <div>
-          <button onClick={this.props.getMovies}>get movies</button>
-        </div>
-        {movies}
-
-        <div>
-          <button onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
-        </div>
-        {userMovies}
-
-        <div>
-          <p>API実験場</p>
+        <div class="contents">
+          <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
           <div>
-            <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
-            {this.props.movieTmdb.title}
-            {this.props.movieTmdb.releaseDate}
+            <button onClick={this.props.getMovieById}>get movie by id</button>
+          </div>
+          <div class="movie">
+            <p class="movieTitle">{this.props.movie.title}</p>
+            <p class="releaseDate">{this.props.movie.releaseDate}</p>
+          </div>
+
+          <div>
+            <button onClick={this.props.getMovies}>get movies</button>
+          </div>
+          {movies}
+
+          <div>
+            <button onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
+          </div>
+          {userMovies}
+
+          <div class="test">
+            <p>API実験場</p>
+            <div>
+              <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
+              <div class="movie">
+                <p class="movieTitle">{this.props.movieTmdb.title}</p>
+                <p class="releaseDate">{this.props.movieTmdb.releaseDate}</p>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     )
   }

@@ -1,0 +1,10 @@
+@charset "UTF-8";
+html {
+    font-size: 18px;
+    font-family: "游ゴシック体", "Yu Gothic", Yu Gothic, sans-serif;
+}
+body {
+    line-height: normal;
+    text-align: justify;
+    background-color: rgba(32, 141, 141, 0.867);
+}
