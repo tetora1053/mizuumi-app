@@ -2,14 +2,19 @@
 #title {
     font-size: 2rem;
     font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-right: 15px;
-    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:20px;
+    margin-left: 25px;
 }
 #log-out {
     text-align: right;
-    margin: auto 15px 30px;
+    margin-right: 40px;
+}
+#select-number {
+    margin: 10px auto;
+    border: 1px solid #000;
+    font-size: medium;
 }
 
 .app {
@@ -21,9 +26,15 @@
     color: rgba(228, 241, 241);
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .contents {
     padding:10px 10px 15px 15px;
+}
+.button {
+    margin:10px auto;
+    background-color: rgba(32, 141, 141, 0.867);
+    color: rgba(228, 241, 241);
 }
 
 /* movies */
@@ -35,6 +46,7 @@
 .movieTitle {
     font-weight: bold;
     margin: unset;
+    font-size: 1.5rem;
 }
 .releaseDate {
     font-size: 0.8rem;

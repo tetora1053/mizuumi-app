@@ -44,9 +44,9 @@ class Top extends React.Component {
         </header>
 
         <div class="contents">
-          <input type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
+          <input id="select-number" type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
           <div>
-            <button onClick={this.props.getMovieById}>get movie by id</button>
+            <button class="button" onClick={this.props.getMovieById}>get movie by id</button>
           </div>
           <div class="movie">
             <p class="movieTitle">{this.props.movie.title}</p>
@@ -54,19 +54,19 @@ class Top extends React.Component {
           </div>
 
           <div>
-            <button onClick={this.props.getMovies}>get movies</button>
+            <button class="button" onClick={this.props.getMovies}>get movies</button>
           </div>
           {movies}
 
           <div>
-            <button onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
+            <button class="button" onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
           </div>
           {userMovies}
 
           <div class="test">
             <p>API実験場</p>
             <div>
-              <button onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
+              <button class="button" onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
               <div class="movie">
                 <p class="movieTitle">{this.props.movieTmdb.title}</p>
                 <p class="releaseDate">{this.props.movieTmdb.releaseDate}</p>
