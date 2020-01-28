@@ -1,28 +1,53 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import store from './store'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom"
+import { ConnectedRouter } from 'connected-react-router'
+import configureStore, { history } from './store'
 import Top from './containers/Top'
 import Login from './containers/Login'
 
+const store = configureStore()
+
 const ParentComponent = () => {
-  let parentCmp
-  if (true) {
-    parentCmp = <Top/>
-  } else {
-    parentCmp = <Login/>
-  }
   return (
     <div>
-      {parentCmp}
+      <ul>
+        <li>
+          <Link to="/">Top</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+      </ul>
+
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/">
+          <Top />
+        </Route>
+      </Switch>
     </div>
   )
 }
 
 ReactDOM.render(
   <Provider store={store}>
-    <ParentComponent/>
+    <ConnectedRouter history={history}>
+      <Router>
+        <ParentComponent/>
+      </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
-);
+)
 
