@@ -1,33 +1,12 @@
-import { HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_BY_ID, GET_MOVIE_FROM_TMDB, GET_MOVIES, GET_MOVIES_BY_USER_ID } from './actionTypes'
-import { TMDB_API_KEY } from '../secret/secret'
+import { GET_MOVIE_BY_ID, GET_MOVIES, GET_MOVIES_BY_USER_ID } from './actionTypes'
 import axios from 'axios'
 
-export const handleChangeSearchId = (id) => {
-  return {
-    type: HANDLE_CHANGE_SEARCH_ID,
-    searchId: id
-  }
-}
-
-export const getMovieById = () => {
+export const getMovieById = (id) => {
   return (dispatch, getState) => {
-    const id = getState().handleChangeSearchId
     const url = "http://160.16.196.72:1323/movies/" + id
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_BY_ID,
-        payload: res.data
-      })
-    })
-  }
-}
-
-export const getMovieFromTmdb = () => {
-  return (dispatch) => {
-    const url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API_KEY + "&language=ja"
-    axios.get(url).then(res => {
-      dispatch({
-        type: GET_MOVIE_FROM_TMDB,
         payload: res.data
       })
     })
