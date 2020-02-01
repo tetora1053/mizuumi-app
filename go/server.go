@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "fmt"
+	"fmt"
 	"log"
 	"net/http"
 	"github.com/labstack/echo"
@@ -56,6 +56,7 @@ func getMovieById(c echo.Context) error {
 
 	m := Movie{}
 	db.First(&m, id)
+	fmt.Println(m)
 
 	return c.JSON(http.StatusOK, m)
 }

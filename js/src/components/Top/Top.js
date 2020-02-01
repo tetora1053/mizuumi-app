@@ -1,11 +1,15 @@
 import React from 'react'
 import './top.css'
 import Movie from '../Movie/Movie.js'
+import MoviePage from '../../containers/MoviePage.js'
+import {
+  Route,
+  Link,
+} from "react-router-dom"
 
 class Top extends React.Component {
   constructor() {
     super()
-    this.changeSearchId = this.changeSearchId.bind(this)
   }
 
   componentDidMount() {
@@ -15,10 +19,6 @@ class Top extends React.Component {
      */
     const userId = 1
     this.props.getMoviesByUserId(userId)
-  }
-
-  changeSearchId(e) {
-    this.props.handleChangeSearchId(e.target.value)
   }
 
   render() {
@@ -39,29 +39,18 @@ class Top extends React.Component {
         </header>
 
         <div className="contents">
-          <input id="select-number" type="number" defaultValue="this.props.searchId" onChange={this.changeSearchId}/>
-          <div>
-            <button className="button" onClick={this.props.getMovieById}>get movie by id</button>
-          </div>
-          <Movie movie={this.props.movie} key={this.props.movie.id}/>
-
-          <div>
-            <button className="button" onClick={this.props.getMovies}>get movies</button>
-          </div>
-          {movies}
-
-          <div>
-            <button className="button" onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
-          </div>
-          {userMovies}
-
-          <div className="test">
-            <p>API実験場</p>
+          <Route exact path="/">
             <div>
-              <button className="button" onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
-              <Movie movie={this.props.movieTmdb} />
+              <button className="button" onClick={this.props.getMovies}>get movies</button>
             </div>
-          </div>
+            {movies}
+
+            <div>
+              <button className="button" onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
+            </div>
+            {userMovies}
+          </Route>
+          <Route path="/movies/:id" component={MoviePage} />
         </div>
       </div>
     )
