@@ -24,11 +24,11 @@ class Top extends React.Component {
   render() {
 
     const movies = this.props.movies.map((movie) => (
-      <Movie movie={movie} />
+      <Movie movie={movie} key={movie.id} />
     ))
 
     const userMovies = this.props.userMovies.map((userMovie) => (
-      <Movie movie={userMovie} />
+      <Movie movie={userMovie} key={userMovie.id}/>
     ))
 
     return (
@@ -43,7 +43,7 @@ class Top extends React.Component {
           <div>
             <button className="button" onClick={this.props.getMovieById}>get movie by id</button>
           </div>
-          <Movie movie={this.props.movie} />
+          <Movie movie={this.props.movie} key={this.props.movie.id}/>
 
           <div>
             <button className="button" onClick={this.props.getMovies}>get movies</button>
