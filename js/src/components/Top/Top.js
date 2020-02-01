@@ -2,6 +2,7 @@ import React from 'react'
 import './top.css'
 import Movie from '../Movie/Movie.js'
 import MoviePage from '../../containers/MoviePage.js'
+import Header from '../Header/Header.js'
 import {
   Route,
   Link,
@@ -33,11 +34,7 @@ class Top extends React.Component {
 
     return (
       <div className="app">
-        <header className="header">
-          <p id="title">Your Favorite Movies.</p>
-          <p id="log-out">Log out</p>
-        </header>
-
+        <Header />
         <div className="contents">
           <Route exact path="/">
             <div>
