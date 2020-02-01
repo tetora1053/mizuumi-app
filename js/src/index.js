@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Switch,
   Route,
   Link,
@@ -43,9 +43,9 @@ const ParentComponent = () => {
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Router>
+      <BrowserRouter>
         <ParentComponent/>
-      </Router>
+      </BrowserRouter>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

@@ -26,7 +26,6 @@ export const getMovieFromTmdb = () => {
   return (dispatch) => {
     const url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API_KEY + "&language=ja"
     axios.get(url).then(res => {
-      console.log(res.data)
       dispatch({
         type: GET_MOVIE_FROM_TMDB,
         payload: res.data

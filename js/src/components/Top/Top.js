@@ -1,5 +1,6 @@
 import React from 'react'
 import './top.css'
+import Movie from '../Movie/Movie.js'
 
 class Top extends React.Component {
   constructor() {
@@ -19,22 +20,16 @@ class Top extends React.Component {
   changeSearchId(e) {
     this.props.handleChangeSearchId(e.target.value)
   }
+
   render() {
 
     const movies = this.props.movies.map((movie) => (
-      <div className="movie" key={movie.id}>
-        <p className="movieTitle">{movie.title}</p>
-        <p className="releaseDate">{movie.release_date}</p>
-      </div>
-    ));
+      <Movie movie={movie} />
+    ))
 
     const userMovies = this.props.userMovies.map((userMovie) => (
-      <div className="movie" key={userMovie.id}>
-        <p className="movieTitle">{userMovie.title}</p>
-        <p className="releaseDate">{userMovie.release_date}</p>
-      </div>
-    ));
-
+      <Movie movie={userMovie} />
+    ))
 
     return (
       <div className="app">
@@ -48,10 +43,7 @@ class Top extends React.Component {
           <div>
             <button className="button" onClick={this.props.getMovieById}>get movie by id</button>
           </div>
-          <div className="movie">
-            <p className="movieTitle">{this.props.movie.title}</p>
-            <p className="releaseDate">{this.props.movie.releaseDate}</p>
-          </div>
+          <Movie movie={this.props.movie} />
 
           <div>
             <button className="button" onClick={this.props.getMovies}>get movies</button>
@@ -67,10 +59,7 @@ class Top extends React.Component {
             <p>API実験場</p>
             <div>
               <button className="button" onClick={this.props.getMovieFromTmdb}>ファイトクラブ</button>
-              <div className="movie">
-                <p className="movieTitle">{this.props.movieTmdb.title}</p>
-                <p className="releaseDate">{this.props.movieTmdb.releaseDate}</p>
-              </div>
+              <Movie movie={this.props.movieTmdb} />
             </div>
           </div>
         </div>
