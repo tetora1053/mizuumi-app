@@ -1,5 +1,5 @@
 import React from 'react'
-import './top.css'
+import './app.css'
 import Movie from '../Movie/Movie.js'
 import MoviePage from '../../containers/MoviePage.js'
 import Header from '../Header/Header.js'
@@ -8,7 +8,7 @@ import {
   Link,
 } from "react-router-dom"
 
-class Top extends React.Component {
+class App extends React.Component {
   constructor() {
     super()
   }
@@ -54,5 +54,5 @@ class Top extends React.Component {
   }
 }
 
-export default Top
+export default App
 
