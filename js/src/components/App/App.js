@@ -1,11 +1,11 @@
 import React from 'react'
 import './app.css'
-import Movie from '../Movie/Movie.js'
-import MoviePage from '../../containers/MoviePage.js'
 import Header from '../Header/Header.js'
+import Menu from '../Menu/Menu.js'
+import MovieTmb from '../MovieTmb/MovieTmb.js'
+import Movie from '../../containers/Movie.js'
 import {
   Route,
-  Link,
 } from "react-router-dom"
 
 class App extends React.Component {
@@ -20,34 +20,34 @@ class App extends React.Component {
      */
     const userId = 1
     this.props.getMoviesByUserId(userId)
+
+    this.props.getMovies()
   }
 
   render() {
 
-    const movies = this.props.movies.map((movie) => (
-      <Movie movie={movie} key={movie.id} />
+    const movieList = this.props.movies.map((movie) => (
+      <MovieTmb movie={movie} key={movie.id} />
     ))
 
-    const userMovies = this.props.userMovies.map((userMovie) => (
-      <Movie movie={userMovie} key={userMovie.id}/>
+    const userMovieList = this.props.userMovies.map((userMovie) => (
+      <MovieTmb movie={userMovie} key={userMovie.id}/>
     ))
 
     return (
       <div className="app">
         <Header />
+        <Menu />
         <div className="contents">
           <Route exact path="/">
-            <div>
-              <button className="button" onClick={this.props.getMovies}>get movies</button>
-            </div>
-            {movies}
-
-            <div>
-              <button className="button" onClick={this.props.getMoviesByUserId.bind(this, 1)}>get movies by user_id</button>
-            </div>
-            {userMovies}
+            {movieList}
           </Route>
-          <Route path="/movies/:id" component={MoviePage} />
+
+          <Route exact path="/myMovies">
+            {userMovieList}
+          </Route>
+
+          <Route path="/movies/:id" component={Movie} />
         </div>
       </div>
     )

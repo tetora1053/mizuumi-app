@@ -1,16 +1,17 @@
 import React from 'react'
-import {
-  Link,
-} from "react-router-dom"
 
-const Movie = (props) => (
-  <Link to={`/movies/${props.movie.id}`}>
-    <div className="movie">
-      <p className="movieTitle">{props.movie.title}</p>
-      <p className="releaseDate">{props.movie.releaseDate}</p>
+const Movie = (props) => {
+  const { id } = props.match.params
+  props.getMovieById(id)
+  return (
+    <div className="moviePage">
+      <p>MoviePage</p>
+      <p>{id}</p>
+      <p>{props.title}</p>
+      <p>{props.releaseDate}</p>
     </div>
-  </Link>
-)
+  )
+}
 
 export default Movie
 
