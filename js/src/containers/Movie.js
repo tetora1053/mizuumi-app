@@ -6,6 +6,7 @@ import MovieComp from '../components/Movie/Movie'
 const mapStateToProps = state => {
   return ({
     title: state.movie.title,
+    overview: state.movie.overview,
     releaseDate: state.movie.releaseDate,
   })
 }

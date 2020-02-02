@@ -27,6 +27,7 @@ func gormConnect() *gorm.DB {
 type Movie struct {
 	Id int64 `json:"id"`
 	Title  string `json:"title"`
+	Overview  string `json:"overview"`
 	Release_date string `json:"releaseDate"`
 }
 

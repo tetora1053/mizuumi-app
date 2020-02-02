@@ -8,6 +8,7 @@ const Movie = (props) => {
       <p>MoviePage</p>
       <p>{id}</p>
       <p>{props.title}</p>
+      <p>{props.overview}</p>
       <p>{props.releaseDate}</p>
     </div>
   )

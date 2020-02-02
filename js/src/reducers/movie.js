@@ -8,6 +8,7 @@ const movie = (state = initialState, action) => {
       return Object.assign({}, state, {
         id: action.payload.id,
         title: action.payload.title,
+        overview: action.payload.overview,
         releaseDate: action.payload.releaseDate
       })
     default:
