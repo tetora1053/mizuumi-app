@@ -1,17 +1,25 @@
 package main
 
 import (
-	"github.com/BurntSushi/toml"
 	"fmt"
-	"flag"
-	"strconv"
-	"io/ioutil"
 	"log"
-	"net/http"
+	"github.com/t-tiger/gorm-bulk-insert"
 	"net/url"
+	"net/http"
+	"github.com/BurntSushi/toml"
+	"io/ioutil"
 	"encoding/json"
 	"../utils/dao"
 )
+
+type Genre struct {
+	Id int64
+	Name string
+}
+
+type Genres struct {
+	Genres []Genre
+}
 
 type Config struct {
 	API APIConfig
@@ -21,21 +29,8 @@ type APIConfig struct {
 	Api_key string `toml: "api_key"`
 }
 
-type Movie struct {
-	Tmdb_id int64 `json:"id"`
-	Title string
-	Overview string
-	Release_date string
-}
-
 func main() {
-	// コマンドライン引数で渡されたidでtmdbAPIからデータ取得
-	flag.Parse()
-	id := flag.Arg(0)
-	if _, err := strconv.Atoi(id); err != nil {
-		log.Fatal(err)
-	}
-	u := "https://api.themoviedb.org/3/movie/" + id
+	u := "https://api.themoviedb.org/3/genre/movie/list"
 	v := url.Values{}
 
 	var c Config
@@ -57,16 +52,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(b))
 
-	// 取得したjsonデータをMovie構造体にマップ
-	var m Movie
-	json.Unmarshal([]byte(b), &m)
-	fmt.Printf("%+v", m)
+	var g Genres
+	json.Unmarshal([]byte(b), &g)
 
 	// dbに接続して新規レコード作成
 	db := dao.Connect()
 	defer db.Close()
-	db.Where(Movie{Tmdb_id: m.Tmdb_id}).Assign(&m).FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
+
+	s := make([]interface{}, len(g.Genres))
+	for i, v := range g.Genres {
+		s[i] = v
+	}
+	fmt.Printf("%+v", s)
+
+	err = gormbulk.BulkInsert(db, s, 3000)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 

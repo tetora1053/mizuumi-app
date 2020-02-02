@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getMovieById } from '../actions'
-import MoviePageComp from '../components/MoviePage/MoviePage'
+import MovieComp from '../components/Movie/Movie'
 
 const mapStateToProps = state => {
   return ({
     title: state.movie.title,
+    overview: state.movie.overview,
     releaseDate: state.movie.releaseDate,
   })
 }
@@ -17,5 +18,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MoviePageComp)
+)(MovieComp)
 

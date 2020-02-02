@@ -11,7 +11,7 @@ import {
 } from "react-router-dom"
 import { ConnectedRouter } from 'connected-react-router'
 import configureStore, { history } from './store'
-import Top from './containers/Top'
+import App from './containers/App'
 import Login from './containers/Login'
 
 const store = configureStore()
@@ -21,7 +21,7 @@ const ParentComponent = () => {
     <div>
       <ul>
         <li>
-          <Link to="/">Top</Link>
+          <Link to="/">App</Link>
         </li>
         <li>
           <Link to="/login">Login</Link>
@@ -33,7 +33,7 @@ const ParentComponent = () => {
           <Login />
         </Route>
         <Route path="/">
-          <Top />
+          <App />
         </Route>
       </Switch>
     </div>
