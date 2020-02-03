@@ -5,7 +5,7 @@ const initialState = {
   title: "",
   overview: "",
   releaseDate: "",
-  genres: ["drama", "comedy"]
+  genres: []
 }
 
 const movie = (state = initialState, action) => {

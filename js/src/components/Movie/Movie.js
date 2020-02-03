@@ -1,8 +1,11 @@
 import React from 'react'
+import {
+  Link,
+} from "react-router-dom"
 
 class Movie extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.props.match.params
     this.props.getMovieById(id)
   }
@@ -17,9 +20,11 @@ class Movie extends React.Component {
         <p>{this.props.overview}</p>
         <p>{this.props.releaseDate}</p>
         {
-          this.props.genres.map((genre, i) => {
-            return <div key={i}>{genre}</div>
-          })
+          this.props.genres.map((genre, i) => (
+            <Link to="/" key={i}>
+              <div>{genre}</div>
+            </Link>
+          ))
         }
       </div>
     )

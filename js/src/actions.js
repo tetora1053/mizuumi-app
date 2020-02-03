@@ -1,4 +1,4 @@
-import { GET_MOVIE_BY_ID, GET_MOVIES, GET_MOVIES_BY_USER_ID } from './actionTypes'
+import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS } from './actionTypes'
 import axios from 'axios'
 
 export const getMovieById = (id) => {
@@ -14,24 +14,24 @@ export const getMovieById = (id) => {
   }
 }
 
-export const getMovies = () => {
+export const getMovieTmbs = () => {
   return (dispatch) => {
     const url = "http://160.16.196.72:1323/movies"
     axios.get(url).then(res => {
       dispatch({
-        type: GET_MOVIES,
+        type: GET_MOVIE_TMBS,
         payload: res.data
       })
     })
   }
 }
 
-export const getMoviesByUserId = (user_id) => {
+export const getMovieTmbsByUserId = (user_id) => {
   return (dispatch) => {
     const url = "http://160.16.196.72:1323/users/" + user_id + "/movies"
     axios.get(url).then(res => {
       dispatch({
-        type: GET_MOVIES_BY_USER_ID,
+        type: GET_MOVIE_TMBS,
         payload: res.data
       })
     })
