@@ -10,21 +10,11 @@ import (
 	"net/http"
 	"net/url"
 	"encoding/json"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"../utils/dao"
 )
 
 type Config struct {
-	DB DBConfig
 	API APIConfig
-}
-
-type DBConfig struct {
-	Dbms string `toml: "dbms"`
-	User string `toml: "user"`
-	Password string `toml: "password"`
-	Protocol string `toml: "protocol"`
-	Dbname string `toml: "dbname"`
 }
 
 type APIConfig struct {
@@ -32,26 +22,22 @@ type APIConfig struct {
 }
 
 type Movie struct {
+	Id int64
 	Tmdb_id int64 `json:"id"`
 	Title string
+	Overview string
 	Release_date string
+	Genres []Genre
 }
 
-func gormConnect() *gorm.DB {
+type Genre struct {
+	Id int64
+	Name string
+}
 
-	var c Config
-	_, err := toml.DecodeFile("../secret/config.toml", &c)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	connect := c.DB.User + ":" + c.DB.Password+ "@" + c.DB.Protocol + "/" + c.DB.Dbname
-	// DBに接続
-	db, err := gorm.Open(c.DB.Dbms, connect)
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
+type MovieGenre struct {
+	Movie_id int64
+	Genre_id int64
 }
 
 func main() {
@@ -83,6 +69,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(string(b))
 
 	// 取得したjsonデータをMovie構造体にマップ
 	var m Movie
@@ -90,8 +77,18 @@ func main() {
 	fmt.Printf("%+v", m)
 
 	// dbに接続して新規レコード作成
-	db := gormConnect()
+	db := dao.Connect()
 	defer db.Close()
-	db.FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
+	db.Where(Movie{Tmdb_id: m.Tmdb_id}).Assign(&m).FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
+
+	mg := make([]MovieGenre, len(m.Genres))
+	for i, v := range m.Genres {
+		mg[i].Movie_id = m.Id
+		mg[i].Genre_id = v.Id
+	}
+
+	for i, v := range mg {
+		db.Where(MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id}).Assign(&mg[i]).FirstOrCreate(&mg[i], MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id})
+	}
 }
 
