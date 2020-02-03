@@ -22,10 +22,22 @@ type APIConfig struct {
 }
 
 type Movie struct {
+	Id int64
 	Tmdb_id int64 `json:"id"`
 	Title string
 	Overview string
 	Release_date string
+	Genres []Genre
+}
+
+type Genre struct {
+	Id int64
+	Name string
+}
+
+type MovieGenre struct {
+	Movie_id int64
+	Genre_id int64
 }
 
 func main() {
@@ -68,5 +80,14 @@ func main() {
 	db := dao.Connect()
 	defer db.Close()
 	db.Where(Movie{Tmdb_id: m.Tmdb_id}).Assign(&m).FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
-}
 
+	mg := make([]MovieGenre, len(m.Genres))
+	for i, v := range m.Genres {
+		mg[i].Movie_id = m.Id
+		mg[i].Genre_id = v.Id
+	}
+
+	for i, v := range mg {
+		db.Where(MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id}).Assign(&mg[i]).FirstOrCreate(&mg[i], MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id})
+	}
+}
