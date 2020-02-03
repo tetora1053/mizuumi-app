@@ -1,6 +1,12 @@
 import { GET_MOVIE_BY_ID } from '../actionTypes'
 
-const initialState = {}
+const initialState = {
+  id: 0,
+  title: "",
+  overview: "",
+  releaseDate: "",
+  genres: ["drama", "comedy"]
+}
 
 const movie = (state = initialState, action) => {
   switch (action.type) {
@@ -9,7 +15,8 @@ const movie = (state = initialState, action) => {
         id: action.payload.id,
         title: action.payload.title,
         overview: action.payload.overview,
-        releaseDate: action.payload.releaseDate
+        releaseDate: action.payload.releaseDate,
+        genres: action.payload.genres
       })
     default:
       return state

@@ -15,6 +15,17 @@ type Movie struct {
 	Title  string `json:"title"`
 	Overview  string `json:"overview"`
 	Release_date string `json:"releaseDate"`
+	Genres []string `json:"genres"`
+}
+
+type Genre struct {
+	Id int64
+	Name string
+}
+
+type MovieGenre struct {
+	Movie_id int64
+	Genre_id int64
 }
 
 type UserMovie struct {
@@ -43,6 +54,17 @@ func getMovieById(c echo.Context) error {
 
 	m := Movie{}
 	db.First(&m, id)
+
+	mgs := []MovieGenre{}
+	db.Where("movie_id = ?", m.Id).Find(&mgs)
+
+	var s []string
+	for _, v := range mgs {
+		g := Genre{}
+		db.First(&g, v.Genre_id)
+		s = append(s, g.Name)
+	}
+	m.Genres = s
 	fmt.Println(m)
 
 	return c.JSON(http.StatusOK, m)
