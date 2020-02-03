@@ -22,7 +22,7 @@ type DBConfig struct {
 func Connect() *gorm.DB {
 
 	var c Config
-	_, err := toml.DecodeFile("../secret/config.toml", &c)
+	_, err := toml.DecodeFile("./secret/config.toml", &c)
 	if err != nil {
 		log.Fatal(err)
 	}

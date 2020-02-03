@@ -6,23 +6,9 @@ import (
 	"net/http"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"./secret"
 	"strconv"
+	"./utils/dao"
 )
-
-func gormConnect() *gorm.DB {
-	a := secret.GetAuthData()
-
-	CONNECT := a.USER + ":" + a.PASS + "@" + a.PROTOCOL + "/" + a.DBNAME
-	// DBに接続
-	db, err := gorm.Open(a.DBMS, CONNECT)
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
-}
 
 type Movie struct {
 	Id int64 `json:"id"`
@@ -52,7 +38,7 @@ func getMovieById(c echo.Context) error {
 		log.Fatal(err)
 	}
 
-	db := gormConnect()
+	db := dao.Connect()
 	defer db.Close()
 
 	m := Movie{}
@@ -63,7 +49,7 @@ func getMovieById(c echo.Context) error {
 }
 
 func getMovies(c echo.Context) error {
-	db := gormConnect()
+	db := dao.Connect()
 	defer db.Close()
 
 	ms := []Movie{}
@@ -78,7 +64,7 @@ func getMoviesByUserId(c echo.Context) error {
 		log.Fatal(err)
 	}
 
-	db := gormConnect()
+	db := dao.Connect()
 	defer db.Close()
 
 	// user_moviesテーブルからレコード取得
