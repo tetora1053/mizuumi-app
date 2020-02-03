@@ -11,7 +11,7 @@ import {
 } from "react-router-dom"
 import { ConnectedRouter } from 'connected-react-router'
 import configureStore, { history } from './store'
-import App from './containers/App'
+import App from './components/App/App'
 import Login from './containers/Login'
 
 const store = configureStore()
