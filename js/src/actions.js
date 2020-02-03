@@ -5,6 +5,7 @@ export const getMovieById = (id) => {
   return (dispatch, getState) => {
     const url = "http://160.16.196.72:1323/movies/" + id
     axios.get(url).then(res => {
+      console.log(res.data)
       dispatch({
         type: GET_MOVIE_BY_ID,
         payload: res.data

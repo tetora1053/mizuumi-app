@@ -8,6 +8,7 @@ const mapStateToProps = state => {
     title: state.movie.title,
     overview: state.movie.overview,
     releaseDate: state.movie.releaseDate,
+    genres: state.movie.genres
   })
 }
 
