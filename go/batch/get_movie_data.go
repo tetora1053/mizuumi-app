@@ -30,6 +30,19 @@ type Movie struct {
 	Genres []Genre
 }
 
+/*
+ * tmdbAPIから取得したmovieデータの中で、moviesテーブルには保存しないが
+ * バッチの処理上必要なデータを格納するための構造体  
+ */
+type MovieTmp struct {
+	Poster_path string
+}
+
+type MovieImage struct {
+	Movie_id int64
+	Data []byte
+}
+
 type Genre struct {
 	Id int64
 	Name string
@@ -69,25 +82,46 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(b))
 
 	// 取得したjsonデータをMovie構造体にマップ
-	var m Movie
-	json.Unmarshal([]byte(b), &m)
-	fmt.Printf("%+v", m)
+	var (
+		m Movie
+		mt MovieTmp
+	) 
+
+	json.Unmarshal(b, &m)
+	json.Unmarshal(b, &mt)
+	fmt.Printf("%+v\n", m)
 
 	// dbに接続して新規レコード作成
 	db := dao.Connect()
 	defer db.Close()
 	db.Where(Movie{Tmdb_id: m.Tmdb_id}).Assign(&m).FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
 
+	// movie_genresテーブルにinsert
 	mg := make([]MovieGenre, len(m.Genres))
 	for i, v := range m.Genres {
 		mg[i].Movie_id = m.Id
 		mg[i].Genre_id = v.Id
 	}
-
 	for i, v := range mg {
 		db.Where(MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id}).Assign(&mg[i]).FirstOrCreate(&mg[i], MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id})
 	}
+
+	// 画像を取得してmovie_imagesテーブルにinsert
+	imgUrl := "https://image.tmdb.org/t/p/w500" + mt.Poster_path
+	imgRes, err := http.Get(imgUrl)
+	defer imgRes.Body.Close()
+	if err != nil {
+		log.Fatal(err)
+	} else if imgRes.StatusCode != 200 {
+		log.Fatal("StatusCode is not 200 but ", imgRes.StatusCode)
+	}
+	img, err := ioutil.ReadAll(imgRes.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	mb := MovieImage{Movie_id: m.Id, Data: img}
+	db.Where(MovieImage{Movie_id: mb.Movie_id}).Assign(&mb).FirstOrCreate(&mb, MovieImage{Movie_id: mb.Movie_id})
 }
+
