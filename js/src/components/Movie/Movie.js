@@ -21,8 +21,8 @@ class Movie extends React.Component {
         <p>{this.props.releaseDate}</p>
         {
           this.props.genres.map((genre, i) => (
-            <Link to="/" key={i}>
-              <div>{genre}</div>
+            <Link to={`/genres/${genre.id}`} key={i}>
+              <div>{genre.name}</div>
             </Link>
           ))
         }

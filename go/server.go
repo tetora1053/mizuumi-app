@@ -15,12 +15,12 @@ type Movie struct {
 	Title  string `json:"title"`
 	Overview  string `json:"overview"`
 	Release_date string `json:"releaseDate"`
-	Genres []string `json:"genres"`
+	Genres []Genre `json:"genres"`
 }
 
 type Genre struct {
-	Id int64
-	Name string
+	Id int64 `json:"id"`
+	Name string `json:"name"`
 }
 
 type MovieGenre struct {
@@ -39,6 +39,7 @@ func main() {
 	e.GET("/movies/:id", getMovieById)
 	e.GET("/movies", getMovies)
 	e.GET("/users/:userId/movies", getMoviesByUserId)
+	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -58,13 +59,11 @@ func getMovieById(c echo.Context) error {
 	mgs := []MovieGenre{}
 	db.Where("movie_id = ?", m.Id).Find(&mgs)
 
-	var s []string
 	for _, v := range mgs {
 		g := Genre{}
 		db.First(&g, v.Genre_id)
-		s = append(s, g.Name)
+		m.Genres = append(m.Genres, g)
 	}
-	m.Genres = s
 	fmt.Println(m)
 
 	return c.JSON(http.StatusOK, m)
@@ -96,6 +95,31 @@ func getMoviesByUserId(c echo.Context) error {
 	// 取得したレコードからmovie_idのスライスを作成
 	var movieIds []int64
 	for _, s := range ums {
+		movieIds = append(movieIds, s.Movie_id)
+	}
+
+	// Movieテーブルからレコード取得
+	ms := []Movie{}
+	db.Where(movieIds).Find(&ms)
+	return c.JSON(http.StatusOK, ms)
+}
+
+func getMoviesByGenreId(c echo.Context) error {
+	genreId, err := strconv.Atoi(c.Param("genreId"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db := dao.Connect()
+	defer db.Close()
+
+	// movie_genreテーブルからレコード取得
+	mgs := []MovieGenre{}
+	db.Where("genre_id = ?", genreId).Find(&mgs)
+
+	// 取得したレコードからmovie_idのスライスを作成
+	var movieIds []int64
+	for _, s := range mgs {
 		movieIds = append(movieIds, s.Movie_id)
 	}
 

@@ -16,6 +16,10 @@ class MovieList extends React.Component {
         const userId = 1
         this.props.getMovieTmbsByUserId(userId)
         break;
+      case `/genres/:id`:
+        const { id } = this.props.match.params
+        this.props.getMovieTmbsByGenreId(id)
+        break;
       default:
         this.props.getMovieTmbs()
         break;
@@ -24,7 +28,9 @@ class MovieList extends React.Component {
 
   render() {
     const movieTmbs = this.props.movieTmbs.map((movieTmb) => (
-      <MovieTmb movie={movieTmb} key={movieTmb.id} />
+      <Link to={`/movies/${movieTmb.id}`} key={movieTmb.id}>
+        <MovieTmb movieTmb={movieTmb} />
+      </Link>
     ))
     return (
       <div>

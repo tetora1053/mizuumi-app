@@ -14,9 +14,10 @@ const App = () => (
     <Header />
     <Menu />
     <div className="contents">
-      <Route exact path="/" component={MovieList} />
-      <Route exact path="/myMovies" component={MovieList} mode="user" />
-      <Route path="/movies/:id" component={Movie} />
+      <Route exact path="/" component={MovieList}/>
+      <Route exact path="/myMovies" component={MovieList} mode="user"/>
+      <Route exact path="/genres/:id" component={MovieList} mode="genre"/>
+      <Route path="/movies/:id" component={Movie}/>
     </div>
   </div>
 )

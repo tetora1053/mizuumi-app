@@ -26,9 +26,21 @@ export const getMovieTmbs = () => {
   }
 }
 
-export const getMovieTmbsByUserId = (user_id) => {
+export const getMovieTmbsByUserId = (userId) => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/users/" + user_id + "/movies"
+    const url = "http://160.16.196.72:1323/users/" + userId + "/movies"
+    axios.get(url).then(res => {
+      dispatch({
+        type: GET_MOVIE_TMBS,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const getMovieTmbsByGenreId = (genreId) => {
+  return (dispatch) => {
+    const url = "http://160.16.196.72:1323/genres/" + genreId + "/movies"
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_TMBS,
