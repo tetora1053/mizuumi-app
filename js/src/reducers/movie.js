@@ -5,7 +5,7 @@ const initialState = {
   title: "",
   overview: "",
   releaseDate: "",
-  genres: []
+  genres: [],
 }
 
 const movie = (state = initialState, action) => {
@@ -18,6 +18,7 @@ const movie = (state = initialState, action) => {
         releaseDate: action.payload.releaseDate,
         genres: action.payload.genres
       })
+      break
     default:
       return state
   }

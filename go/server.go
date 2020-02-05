@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"strconv"
 	"./utils/dao"
+	"bytes"
 )
 
 type Movie struct {
@@ -16,6 +17,11 @@ type Movie struct {
 	Overview  string `json:"overview"`
 	Release_date string `json:"releaseDate"`
 	Genres []Genre `json:"genres"`
+}
+
+type MovieImage struct {
+	Movie_id int64
+	Data []byte
 }
 
 type Genre struct {
@@ -37,9 +43,11 @@ func main() {
 	e.Use(middleware.CORS())
 
 	e.GET("/movies/:id", getMovieById)
+	e.GET("/movies/:id/image", getImageByMovieId)
 	e.GET("/movies", getMovies)
 	e.GET("/users/:userId/movies", getMoviesByUserId)
 	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
+
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -67,6 +75,23 @@ func getMovieById(c echo.Context) error {
 	fmt.Println(m)
 
 	return c.JSON(http.StatusOK, m)
+}
+
+func getImageByMovieId(c echo.Context) error {
+	movieId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db := dao.Connect()
+	defer db.Close()
+
+	mi := MovieImage{}
+	db.Where("movie_id = ?", movieId).First(&mi)
+
+	r := bytes.NewReader(mi.Data)
+
+	return c.Stream(http.StatusOK, "image/png", r)
 }
 
 func getMovies(c echo.Context) error {
