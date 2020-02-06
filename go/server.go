@@ -9,6 +9,12 @@ import (
 	"strconv"
 	"./utils/dao"
 	"bytes"
+	"bufio"
+	"image"
+	_ "image/gif"
+	"image/jpeg"
+	_ "image/png"
+	"golang.org/x/image/draw"
 )
 
 type Movie struct {
@@ -44,6 +50,7 @@ func main() {
 
 	e.GET("/movies/:id", getMovieById)
 	e.GET("/movies/:id/image", getImageByMovieId)
+	e.GET("/movies/:id/thumbnail", getThumbnailByMovieId)
 	e.GET("/movies", getMovies)
 	e.GET("/users/:userId/movies", getMoviesByUserId)
 	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
@@ -91,7 +98,38 @@ func getImageByMovieId(c echo.Context) error {
 
 	r := bytes.NewReader(mi.Data)
 
-	return c.Stream(http.StatusOK, "image/png", r)
+	return c.Stream(http.StatusOK, "image/jpeg", r)
+}
+
+func getThumbnailByMovieId(c echo.Context) error {
+	movieId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db := dao.Connect()
+	defer db.Close()
+
+	mi := MovieImage{}
+	db.Where("movie_id = ?", movieId).First(&mi)
+
+	imgSrc, _, err := image.Decode(bytes.NewReader(mi.Data))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	catmullRom := draw.CatmullRom
+	rectDst := image.Rect(0, 0, 200, 200)
+	imgDst := image.NewRGBA(rectDst)
+	catmullRom.Scale(imgDst, rectDst, imgSrc, imgSrc.Bounds(), draw.Over, nil)
+
+	var b bytes.Buffer
+	w := bufio.NewWriter(&b)
+	jpeg.Encode(w, imgDst, nil)
+
+	r := bytes.NewReader(b.Bytes())
+
+	return c.Stream(http.StatusOK, "image/jpeg", r)
 }
 
 func getMovies(c echo.Context) error {
