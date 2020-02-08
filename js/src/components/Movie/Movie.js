@@ -17,7 +17,7 @@ class Movie extends React.Component {
         <p>MoviePage</p>
         <p>{id}</p>
         <p>{this.props.title}</p>
-        <img src={`http://160.16.196.72:1323/movies/${id}/image`}/>
+        <img src={`http://api.mizuumi.tetora1053.jp/movies/${id}/image`}/>
         <p>{this.props.overview}</p>
         <p>{this.props.releaseDate}</p>
         {

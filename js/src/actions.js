@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getMovieById = (id) => {
   return (dispatch, getState) => {
-    const url = "http://160.16.196.72:1323/movies/" + id
+    const url = "http://api.mizuumi.tetora1053.jp/movies/" + id
     axios.get(url).then(res => {
       console.log(res.data)
       dispatch({
@@ -16,7 +16,7 @@ export const getMovieById = (id) => {
 
 export const getMovieTmbs = () => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/movies"
+    const url = "http://api.mizuumi.tetora1053.jp/movies"
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_TMBS,
@@ -28,7 +28,7 @@ export const getMovieTmbs = () => {
 
 export const getMovieTmbsByUserId = (userId) => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/users/" + userId + "/movies"
+    const url = "http://api.mizuumi.tetora1053.jp/users/" + userId + "/movies"
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_TMBS,
@@ -40,7 +40,7 @@ export const getMovieTmbsByUserId = (userId) => {
 
 export const getMovieTmbsByGenreId = (genreId) => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/genres/" + genreId + "/movies"
+    const url = "http://api.mizuumi.tetora1053.jp/genres/" + genreId + "/movies"
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_TMBS,
