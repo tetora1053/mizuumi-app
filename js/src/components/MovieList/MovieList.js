@@ -1,5 +1,6 @@
 import React from 'react'
 import MovieTmb from '../MovieTmb/MovieTmb.js'
+import GenreList from '../../containers/GenreList.js'
 import {
   Link,
 } from "react-router-dom"
@@ -34,6 +35,7 @@ class MovieList extends React.Component {
     ))
     return (
       <div>
+        <GenreList />
         {movieTmbs}
       </div>
     )

@@ -54,7 +54,7 @@ func main() {
 	e.GET("/movies", getMovies)
 	e.GET("/users/:userId/movies", getMoviesByUserId)
 	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
-
+	e.GET("/genres", getGenres)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -190,5 +190,16 @@ func getMoviesByGenreId(c echo.Context) error {
 	ms := []Movie{}
 	db.Where(movieIds).Find(&ms)
 	return c.JSON(http.StatusOK, ms)
+}
+
+func getGenres(c echo.Context) error {
+	db := dao.Connect()
+	defer db.Close()
+
+	// genresテーブルからレコード取得
+	gs := []Genre{}
+	db.Find(&gs)
+
+	return c.JSON(http.StatusOK, gs)
 }
 
