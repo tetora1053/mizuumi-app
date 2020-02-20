@@ -16,11 +16,12 @@ class MovieList extends React.Component {
          */
         const userId = 1
         this.props.getMovieTmbsByUserId(userId)
-        break;
+        break
       case `/genres/:id`:
         const { id } = this.props.match.params
         this.props.getMovieTmbsByGenreId(id)
-        break;
+        this.props.changeCurrentGenreId(id)
+        break
       default:
         this.props.getMovieTmbs()
         break;
