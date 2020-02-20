@@ -1,4 +1,5 @@
-import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES } from './actionTypes'
+import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID } from './actionTypes'
+import { push } from 'connected-react-router'
 import axios from 'axios'
 
 export const getMovieById = (id) => {
@@ -37,6 +38,18 @@ export const getMovieTmbsByUserId = (userId) => {
   }
 }
 
+export const handleGenreSelectChange = (genreId) => {
+  return (dispatch) => {
+    if (genreId === "all") {
+      dispatch(getMovieTmbs())
+    } else {
+      dispatch(getMovieTmbsByGenreId(genreId))
+    }
+    dispatch(changeCurrentGenreId(genreId))
+    dispatch(pushHistoryByGenreId(genreId))
+  }
+}
+
 export const getMovieTmbsByGenreId = (genreId) => {
   return (dispatch) => {
     const url = "http://api.mizuumi.tetora1053.jp/genres/" + genreId + "/movies"
@@ -45,6 +58,25 @@ export const getMovieTmbsByGenreId = (genreId) => {
         type: GET_MOVIE_TMBS,
         payload: res.data
       })
+    })
+  }
+}
+
+export const pushHistoryByGenreId = (genreId) => {
+  return (dispatch) => {
+    if (genreId === "all") {
+      dispatch(push("/"))
+    } else {
+      dispatch(push(`/genres/${genreId}`))
+    }
+  }
+}
+
+export const changeCurrentGenreId = (genreId) => {
+  return (dispatch) => {
+    dispatch({
+      type: CHANGE_CURRENT_GENRE_ID,
+      payload: genreId
     })
   }
 }

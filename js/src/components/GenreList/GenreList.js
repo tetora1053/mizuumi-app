@@ -12,23 +12,18 @@ class GenreList extends React.Component {
   }
 
   onChange(e) {
-    console.log(e.target.value)
-    if (e.target.value == "all") {
-      this.props.getMovieTmbs()
-    } else {
-      this.props.getMovieTmbsByGenreId(e.target.value)
-    }
+    this.props.handleGenreSelectChange(e.target.value)
   }
 
   render() {
-    const genreOptions = this.props.genres.map((genre) => (
+    const genreOptions = this.props.genreList.map((genre) => (
       <option key={genre.id} value={genre.id}>
         {genre.name}
       </option>
     ))
 
     return (
-      <select onChange={this.onChange}>
+      <select onChange={this.onChange} value={this.props.currentId}>
         <option value="all">all</option>
         {genreOptions}
       </select>
