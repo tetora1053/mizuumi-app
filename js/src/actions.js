@@ -1,4 +1,4 @@
-import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID, AUTH_LOGIN } from './actionTypes'
+import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID, AUTH_LOGIN, LOGOUT } from './actionTypes'
 import { push } from 'connected-react-router'
 import axios from 'axios'
 
@@ -106,6 +106,20 @@ export const authLogin = (inputData) => {
     }).then(res => {
       dispatch({
         type: AUTH_LOGIN,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/logout"
+    axios.get(url, {
+      withCredentials: true
+    }).then(res => {
+      dispatch({
+        type: LOGOUT,
         payload: res.data
       })
     })

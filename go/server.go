@@ -80,6 +80,7 @@ func main() {
 	e.GET("/users/:userId/movies", getMoviesByUserId)
 	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
 	e.GET("/genres", getGenres)
+	e.GET("/logout", logout)
 
 	e.POST("/authLogin", authLogin)
 
@@ -250,6 +251,13 @@ func authLogin(c echo.Context) error {
 		sess.Set("loginId", u.Name)
 		sess.Save()
 	}
+	return c.JSON(http.StatusOK, "ok")
+}
+
+func logout(c echo.Context) error {
+	sess := session.Default(c)
+	sess.Clear()
+	sess.Save()
 	return c.JSON(http.StatusOK, "ok")
 }
 
