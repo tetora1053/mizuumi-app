@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/ipfans/echo-session"
 	"strconv"
 	"./utils/dao"
 	"bytes"
@@ -15,6 +16,7 @@ import (
 	"image/jpeg"
 	_ "image/png"
 	"golang.org/x/image/draw"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Movie struct {
@@ -44,9 +46,32 @@ type UserMovie struct {
 	Movie_id int64 `json:"movie_id"`
 }
 
+type User struct {
+	Id int64
+	Name string
+	Password string
+}
+
+type AuthInputData struct {
+	Name string
+	Pass string
+}
+
 func main() {
 	e := echo.New()
-	e.Use(middleware.CORS())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://mizuumi.tetora1053.jp"},
+		AllowHeaders:     []string{"authorization", "Content-Type", "Access-Control-Allow-Origin"},
+		AllowCredentials: true,
+		AllowMethods: []string{http.MethodGet, http.MethodPost},
+	}))
+
+	store, err := session.NewRedisStore(32, "tcp", "localhost:6379", "", []byte("secret"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	store.MaxAge(86400)
+	e.Use(session.Sessions("GSESSION", store))
 
 	e.GET("/movies/:id", getMovieById)
 	e.GET("/movies/:id/image", getImageByMovieId)
@@ -55,6 +80,8 @@ func main() {
 	e.GET("/users/:userId/movies", getMoviesByUserId)
 	e.GET("/genres/:genreId/movies", getMoviesByGenreId)
 	e.GET("/genres", getGenres)
+
+	e.POST("/authLogin", authLogin)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -201,5 +228,28 @@ func getGenres(c echo.Context) error {
 	db.Find(&gs)
 
 	return c.JSON(http.StatusOK, gs)
+}
+
+func authLogin(c echo.Context) error {
+	input := new(AuthInputData)
+	if err := c.Bind(input); err != nil {
+		log.Fatal(err)
+	}
+
+	db := dao.Connect()
+	defer db.Close()
+	u := User{}
+	db.Where("name = ?", input.Name).Find(&u)
+
+	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(input.Pass)); err != nil {
+		fmt.Println("Auth Failure")
+	} else {
+		fmt.Println("Auth success")
+		sess := session.Default(c)
+		sess.Set("userId", u.Id)
+		sess.Set("loginId", u.Name)
+		sess.Save()
+	}
+	return c.JSON(http.StatusOK, "ok")
 }
 

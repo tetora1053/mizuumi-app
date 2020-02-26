@@ -1,26 +1,61 @@
-import React from 'react';
-import './login.css';
+import React from 'react'
+import './login.css'
 
-const Login = (props) => {
+class Login extends React.Component {
 
-  const authLogin = () => {
-    console.log("authLogin")
+  constructor(props) {
+    super(props)
+
+    this.nameRef = React.createRef()
+    this.passRef = React.createRef()
+
+    this.validateMsg = "ユーザー名とパスワードを入力してください"
+
+    this.handleClickLogin = this.handleClickLogin.bind(this)
   }
 
-  return (
-    <div>
-      <p>Login</p>
+  handleClickLogin() {
+    const inputData = {
+      name: this.nameRef.current.value,
+      pass: this.passRef.current.value
+    }
+    if (!this.validate(inputData)) {
+      alert(this.validateMsg)
+      return false
+    }
+
+    this.props.authLogin(inputData)
+  }
+
+  validate(inputData) {
+    let res = true
+    if (inputData.name === "") {
+      res = false
+    }
+
+    if (inputData.pass === "") {
+      res = false
+    }
+
+    return res
+  }
+
+  render() {
+    return (
       <div>
-        <span>user</span>
-        <input type="text" />
+        <p>Login</p>
+        <div>
+          <span>user</span>
+          <input type="text" ref={this.nameRef}/>
+        </div>
+        <div>
+          <span>password</span>
+          <input type="text" ref={this.passRef}/>
+        </div>
+        <button onClick={this.handleClickLogin}>login</button>
       </div>
-      <div>
-        <span>password</span>
-        <input type="text" />
-      </div>
-      <button onClick={authLogin}>login</button>
-    </div>
-  );
+    )
+  }
 }
 
 export default Login

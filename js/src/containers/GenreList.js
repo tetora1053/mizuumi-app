@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getGenres, getMovieTmbs, getMovieTmbsByGenreId, handleGenreSelectChange } from '../actions'
-import GenreListComp from '../components/GenreList/GenreList'
+import GenreList from '../components/GenreList/GenreList'
 
 const mapStateToProps = state => {
   return ({
@@ -20,5 +20,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(GenreListComp)
+)(GenreList)
 

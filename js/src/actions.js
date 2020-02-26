@@ -1,4 +1,4 @@
-import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID } from './actionTypes'
+import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID, AUTH_LOGIN } from './actionTypes'
 import { push } from 'connected-react-router'
 import axios from 'axios'
 
@@ -84,9 +84,28 @@ export const changeCurrentGenreId = (genreId) => {
 export const getGenres = () => {
   return (dispatch) => {
     const url = "http://api.mizuumi.tetora1053.jp/genres"
-    axios.get(url).then(res => {
+    axios.get(url, {
+      withCredentials: true
+    }).then(res => {
       dispatch({
         type: GET_GENRES,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const authLogin = (inputData) => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/authLogin"
+    axios.post(url, {
+      name: inputData.name,
+      pass: inputData.pass
+    }, {
+      withCredentials: true
+    }).then(res => {
+      dispatch({
+        type: AUTH_LOGIN,
         payload: res.data
       })
     })
