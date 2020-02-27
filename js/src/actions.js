@@ -104,10 +104,13 @@ export const authLogin = (inputData) => {
     }, {
       withCredentials: true
     }).then(res => {
-      dispatch({
-        type: AUTH_LOGIN,
-        payload: res.data
-      })
+      if (res.data === "succ") {
+        dispatch({
+          type: AUTH_LOGIN
+        })
+      } else {
+        alert("auth failed")
+      }
     })
   }
 }
@@ -119,8 +122,7 @@ export const logout = () => {
       withCredentials: true
     }).then(res => {
       dispatch({
-        type: LOGOUT,
-        payload: res.data
+        type: LOGOUT
       })
     })
   }

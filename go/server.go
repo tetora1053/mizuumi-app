@@ -244,14 +244,15 @@ func authLogin(c echo.Context) error {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(input.Pass)); err != nil {
 		fmt.Println("Auth Failure")
+		return c.JSON(http.StatusOK, "fail")
 	} else {
 		fmt.Println("Auth success")
 		sess := session.Default(c)
 		sess.Set("userId", u.Id)
 		sess.Set("loginId", u.Name)
 		sess.Save()
+		return c.JSON(http.StatusOK, "succ")
 	}
-	return c.JSON(http.StatusOK, "ok")
 }
 
 func logout(c echo.Context) error {
