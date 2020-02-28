@@ -29,8 +29,8 @@ const ParentComponent = () => {
       </ul>
 
       <Switch>
-        <Route exact path="/" component={App} />
         <Route exact path="/login" component={Login} />
+        <Route path="/" component={App} />
       </Switch>
     </div>
   )
