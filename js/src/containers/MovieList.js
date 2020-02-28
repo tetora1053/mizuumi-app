@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getMovieTmbs, getMovieTmbsByUserId, getMovieTmbsByGenreId, changeCurrentGenreId } from '../actions'
-import MovieListComp from '../components/MovieList/MovieList'
+import MovieList from '../components/MovieList/MovieList'
 
 const mapStateToProps = state => {
   return ({
@@ -19,5 +19,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MovieListComp)
+)(MovieList)
 
