@@ -1,28 +1,24 @@
-import { GET_MOVIE_BY_ID, GET_MOVIE_FROM_TMDB } from '../actionTypes'
+import { GET_MOVIE_BY_ID } from '../actionTypes'
 
 const initialState = {
-  movie: {
-    title: "Shining",
-    releaseDate: "1980-01-01"
-  },
-  movieTmdb: {
-    title: "Shining",
-    releaseDate: "1980-01-02"
-  }
+  id: 0,
+  title: "",
+  overview: "",
+  releaseDate: "",
+  genres: [],
 }
 
 const movie = (state = initialState, action) => {
   switch (action.type) {
     case GET_MOVIE_BY_ID:
-      return Object.assign({}, state, {movie: {
+      return Object.assign({}, state, {
+        id: action.payload.id,
         title: action.payload.title,
-        releaseDate: action.payload.release_date
-      }})
-    case GET_MOVIE_FROM_TMDB:
-      return Object.assign({}, state, {movieTmdb: {
-        title: action.payload.title,
-        releaseDate: action.payload.release_date
-      }})
+        overview: action.payload.overview,
+        releaseDate: action.payload.releaseDate,
+        genres: action.payload.genres
+      })
+      break
     default:
       return state
   }

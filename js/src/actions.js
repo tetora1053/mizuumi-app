@@ -1,17 +1,10 @@
-import { HANDLE_CHANGE_SEARCH_ID, GET_MOVIE_BY_ID, GET_MOVIE_FROM_TMDB, GET_MOVIES, GET_MOVIES_BY_USER_ID } from './actionTypes'
-import { TMDB_API_KEY } from '../secret/secret'
+import { GET_MOVIE_BY_ID, GET_MOVIE_TMBS, GET_GENRES, CHANGE_CURRENT_GENRE_ID, AUTH_LOGIN, LOGOUT } from './actionTypes'
+import { push } from 'connected-react-router'
 import axios from 'axios'
 
-export const handleChangeSearchId = (id) => {
-  return {
-    type: HANDLE_CHANGE_SEARCH_ID,
-    searchId: id
-  }
-}
-export const getMovieById = () => {
+export const getMovieById = (id) => {
   return (dispatch, getState) => {
-    const id = getState().handleChangeSearchId
-    const url = "http://160.16.196.72:1323/movies/" + id
+    const url = "http://api.mizuumi.tetora1053.jp/movies/" + id
     axios.get(url).then(res => {
       dispatch({
         type: GET_MOVIE_BY_ID,
@@ -21,59 +14,115 @@ export const getMovieById = () => {
   }
 }
 
-export const getMovieFromTmdb = () => {
+export const getMovieTmbs = () => {
   return (dispatch) => {
-    const url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API_KEY + "&language=ja"
-
-    /* tmp start */
-    // const url = "https://api.themoviedb.org/3/search/movie"
-    // axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-    // axios.get(url, {
-    //   params: {
-    //       query: "アンパンマン",
-    //       page: 1,
-    //       language: 'ja-JA',
-    //       api_key: TMDB_API_KEY
-    //   }
-    /* tmp end */
-
+    const url = "http://api.mizuumi.tetora1053.jp/movies"
     axios.get(url).then(res => {
-      console.log(res.data)
       dispatch({
-        type: GET_MOVIE_FROM_TMDB,
+        type: GET_MOVIE_TMBS,
         payload: res.data
       })
     })
   }
 }
 
-export const getMovies = () => {
+export const getMovieTmbsByUserId = (userId) => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/movies"
+    const url = "http://api.mizuumi.tetora1053.jp/users/" + userId + "/movies"
     axios.get(url).then(res => {
       dispatch({
-        type: GET_MOVIES,
+        type: GET_MOVIE_TMBS,
         payload: res.data
       })
     })
   }
 }
 
-export const getMoviesByUserId = (user_id) => {
+export const handleGenreSelectChange = (genreId) => {
   return (dispatch) => {
-    const url = "http://160.16.196.72:1323/users/" + user_id + "/movies"
+    if (genreId === "all") {
+      dispatch(getMovieTmbs())
+    } else {
+      dispatch(getMovieTmbsByGenreId(genreId))
+    }
+    dispatch(changeCurrentGenreId(genreId))
+    dispatch(pushHistoryByGenreId(genreId))
+  }
+}
 
-    /* tmp start */
-    // const searchId = getState().handleChangeSearchId
-    // const id = ( searchId > 1 ) ? searchId : user_id 
-
-    // const url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + TMDB_API_KEY + "&language=ja"
-    /* tmp end */ 
-
+export const getMovieTmbsByGenreId = (genreId) => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/genres/" + genreId + "/movies"
     axios.get(url).then(res => {
       dispatch({
-        type: GET_MOVIES_BY_USER_ID,
+        type: GET_MOVIE_TMBS,
         payload: res.data
+      })
+    })
+  }
+}
+
+export const pushHistoryByGenreId = (genreId) => {
+  return (dispatch) => {
+    if (genreId === "all") {
+      dispatch(push("/"))
+    } else {
+      dispatch(push(`/genres/${genreId}`))
+    }
+  }
+}
+
+export const changeCurrentGenreId = (genreId) => {
+  return (dispatch) => {
+    dispatch({
+      type: CHANGE_CURRENT_GENRE_ID,
+      payload: genreId
+    })
+  }
+}
+
+export const getGenres = () => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/genres"
+    axios.get(url, {
+      withCredentials: true
+    }).then(res => {
+      dispatch({
+        type: GET_GENRES,
+        payload: res.data
+      })
+    })
+  }
+}
+
+export const authLogin = (inputData) => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/authLogin"
+    axios.post(url, {
+      name: inputData.name,
+      pass: inputData.pass
+    }, {
+      withCredentials: true
+    }).then(res => {
+      if (res.data === "succ") {
+        dispatch({
+          type: AUTH_LOGIN
+        })
+      } else {
+        alert("auth failed")
+      }
+    })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    const url = "http://api.mizuumi.tetora1053.jp/logout"
+    axios.get(url, {
+      withCredentials: true
+    }).then(res => {
+      dispatch({
+        type: LOGOUT
       })
     })
   }

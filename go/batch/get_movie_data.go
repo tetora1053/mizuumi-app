@@ -10,21 +10,11 @@ import (
 	"net/http"
 	"net/url"
 	"encoding/json"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"../utils/dao"
 )
 
 type Config struct {
-	DB DBConfig
 	API APIConfig
-}
-
-type DBConfig struct {
-	Dbms string `toml: "dbms"`
-	User string `toml: "user"`
-	Password string `toml: "password"`
-	Protocol string `toml: "protocol"`
-	Dbname string `toml: "dbname"`
 }
 
 type APIConfig struct {
@@ -32,26 +22,35 @@ type APIConfig struct {
 }
 
 type Movie struct {
+	Id int64
 	Tmdb_id int64 `json:"id"`
 	Title string
+	Overview string
 	Release_date string
+	Genres []Genre
 }
 
-func gormConnect() *gorm.DB {
+/*
+ * tmdbAPIから取得したmovieデータの中で、moviesテーブルには保存しないが
+ * バッチの処理上必要なデータを格納するための構造体  
+ */
+type MovieTmp struct {
+	Poster_path string
+}
 
-	var c Config
-	_, err := toml.DecodeFile("../secret/config.toml", &c)
-	if err != nil {
-		log.Fatal(err)
-	}
+type MovieImage struct {
+	Movie_id int64
+	Data []byte
+}
 
-	connect := c.DB.User + ":" + c.DB.Password+ "@" + c.DB.Protocol + "/" + c.DB.Dbname
-	// DBに接続
-	db, err := gorm.Open(c.DB.Dbms, connect)
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
+type Genre struct {
+	Id int64
+	Name string
+}
+
+type MovieGenre struct {
+	Movie_id int64
+	Genre_id int64
 }
 
 func main() {
@@ -65,7 +64,7 @@ func main() {
 	v := url.Values{}
 
 	var c Config
-	_, err := toml.DecodeFile("../secret/config.toml", &c)
+	_, err := toml.DecodeFile("./secret/config.toml", &c)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -85,13 +84,44 @@ func main() {
 	}
 
 	// 取得したjsonデータをMovie構造体にマップ
-	var m Movie
-	json.Unmarshal([]byte(b), &m)
-	fmt.Printf("%+v", m)
+	var (
+		m Movie
+		mt MovieTmp
+	) 
+
+	json.Unmarshal(b, &m)
+	json.Unmarshal(b, &mt)
+	fmt.Printf("%+v\n", m)
 
 	// dbに接続して新規レコード作成
-	db := gormConnect()
+	db := dao.Connect()
 	defer db.Close()
-	db.FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
+	db.Where(Movie{Tmdb_id: m.Tmdb_id}).Assign(&m).FirstOrCreate(&m, Movie{Tmdb_id: m.Tmdb_id})
+
+	// movie_genresテーブルにinsert
+	mg := make([]MovieGenre, len(m.Genres))
+	for i, v := range m.Genres {
+		mg[i].Movie_id = m.Id
+		mg[i].Genre_id = v.Id
+	}
+	for i, v := range mg {
+		db.Where(MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id}).Assign(&mg[i]).FirstOrCreate(&mg[i], MovieGenre{Movie_id: v.Movie_id, Genre_id: v.Genre_id})
+	}
+
+	// 画像を取得してmovie_imagesテーブルにinsert
+	imgUrl := "https://image.tmdb.org/t/p/w500" + mt.Poster_path
+	imgRes, err := http.Get(imgUrl)
+	defer imgRes.Body.Close()
+	if err != nil {
+		log.Fatal(err)
+	} else if imgRes.StatusCode != 200 {
+		log.Fatal("StatusCode is not 200 but ", imgRes.StatusCode)
+	}
+	img, err := ioutil.ReadAll(imgRes.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	mb := MovieImage{Movie_id: m.Id, Data: img}
+	db.Where(MovieImage{Movie_id: mb.Movie_id}).Assign(&mb).FirstOrCreate(&mb, MovieImage{Movie_id: mb.Movie_id})
 }
 
