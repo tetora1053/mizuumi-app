@@ -1,8 +1,9 @@
 import React from 'react'
 import Logout from '../../containers/Logout'
+import './Header.css'
 
 const Header = () => (
-  <header className="header">
+  <header>
     <p id="title">Your Favorite Movies.</p>
     <Logout />
   </header>

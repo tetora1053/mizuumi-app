@@ -1,0 +1,15 @@
+@charset "UTF-8";
+.menu {
+    background-color: white;
+}
+a {
+    text-decoration: none;
+}
+.menuList {
+    color: rgb(31, 31, 241);
+    padding:1px 15px 1px 15px;
+    border-bottom: 2px solid rgba(75, 102, 102, 0.867);
+}
+.menuList:hover {
+    background-color: azure;
+}

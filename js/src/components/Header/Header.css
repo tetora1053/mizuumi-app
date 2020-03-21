@@ -1,0 +1,16 @@
+@charset "UTF-8";
+#title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:20px;
+    margin-left: 25px;
+}
+header {
+    background-color: rgba(75, 102, 102, 0.867);
+    color: rgba(228, 241, 241);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

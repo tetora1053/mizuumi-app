@@ -1,12 +1,12 @@
 @charset "UTF-8";
-#title {
+/* #title {
     font-size: 2rem;
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 20px;
     margin-right:20px;
     margin-left: 25px;
-}
+} */
 #log-out {
     text-align: right;
     margin-right: 40px;
@@ -21,13 +21,13 @@
     background-color: rgb(239, 244, 248);
     margin: auto;
 }
-.header {
+/* .header {
     background-color: rgba(75, 102, 102, 0.867);
     color: rgba(228, 241, 241);
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+} */
 .contents {
     padding:10px 10px 15px 15px;
 }

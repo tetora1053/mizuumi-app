@@ -3,14 +3,15 @@ import {
   Route,
   Link,
 } from "react-router-dom"
+import './Menu.css'
 
 const Menu = () => (
-  <div>
+  <div class="menu">
     <Link to="/">
-      <div>movies</div>
+      <div class="menuList">movies</div>
     </Link>
     <Link to="/myMovies">
-      <div>My movies</div>
+      <div class="menuList">my movies</div>
     </Link>
   </div>
 )
