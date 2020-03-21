@@ -43,17 +43,20 @@ class Login extends React.Component {
   render() {
     console.log(this.props.isAuth)
     return (
-      <div>
-        <p>Login</p>
-        <div>
-          <span>user</span>
-          <input type="text" ref={this.nameRef}/>
-        </div>
-        <div>
-          <span>password</span>
-          <input type="text" ref={this.passRef}/>
-        </div>
-        <button onClick={this.handleClickLogin}>login</button>
+      <div class="login">
+        <p id="title">Your Favorite Movies.</p>
+        <div class="content">
+          <p>Welcome!</p>
+          <div>
+            <span>user: </span>
+            <input type="text" ref={this.nameRef}/>
+          </div>
+          <div>
+            <span>password: </span>
+            <input type="text" ref={this.passRef}/>
+          </div>
+          <button onClick={this.handleClickLogin}>login</button>
+          </div>
       </div>
     )
   }

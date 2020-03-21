@@ -13,6 +13,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import configureStore, { history } from './store'
 import App from './components/App/App'
 import Login from './containers/Login'
+import './style.css'
 
 const store = configureStore()
 
