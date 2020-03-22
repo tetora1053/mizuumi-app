@@ -1,0 +1,7 @@
+@charset "UTF-8";
+select {
+    width: 12em;
+    font-size: medium;
+    color: rgb(26, 24, 27);
+    border: 2px solid #7985af;
+}

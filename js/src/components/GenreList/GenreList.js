@@ -1,4 +1,5 @@
 import React from 'react'
+import './GenreList.css'
 
 class GenreList extends React.Component {
   constructor(props) {

@@ -1,0 +1,16 @@
+@charset "UTF-8";
+.movie {
+    background-color: #fff;
+    margin: 20px;
+    padding: 10px;
+}
+.movieTitle {
+    font-weight: bold;
+    margin: unset;
+    font-size: 1.5rem;
+}
+.releaseDate {
+    font-size: 0.8rem;
+    color: rgba(75, 102, 102, 0.867);
+    margin: unset;
+}
